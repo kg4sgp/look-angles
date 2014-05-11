@@ -45,12 +45,14 @@ function [az, el, range] = lookang(lat_ground, lon_ground, alt_ground, lat_point
 	% Calculate range distance
 	range = sqrt(rot_s.^2 + rot_e.^2 + rot_z.^2);
 
+  % Calculate elevation and point upwards if range is 0 (same point for all we can tell)
 	if(range == 0)
 		el = (pi/2);
 	else
 		el = asin(rot_z/range);
 	end
 
+  % Calculate azimuth and take care of divide by zero case
 	if(rot_s == 0)
 		az = (pi/2);
 	else

@@ -56,6 +56,7 @@ s_azelcord look_angle(s_geogcord ground, s_geogcord obs)
 
   float range = sqrt(pow(rot_s, 2) + pow(rot_e, 2) + pow(rot_z, 2));
 
+  // Calculate elevation and take care of divide by zero if they're the same point
   float el = 0;
   if (range == 0) {
     el = (M_PI)/2;
@@ -63,6 +64,7 @@ s_azelcord look_angle(s_geogcord ground, s_geogcord obs)
     el = asin(rot_z/range);
   }
 
+  // Calculate the azmuth and take care of divide by zero
   float az = 0;
   if (rot_s == 0) {
     az = (M_PI)/2;
