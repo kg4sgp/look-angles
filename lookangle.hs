@@ -32,7 +32,7 @@ lookAngle g o =
         vZRange = obsZ - groundZ
 
         rotS = sin groundLat * cos groundLon * vXRange + sin groundLat * sin groundLon * vYRange - cos groundLat * vZRange
-        rotE = -(sin groundLon * vXRange + cos groundLon * vYRange)
+        rotE = -(sin groundLon * vXRange) + cos groundLon * vYRange
         rotZ = cos groundLat * cos groundLon * vXRange + cos groundLat * sin groundLon * vYRange + sin groundLat * vZRange
         range' = sqrt $ (rotS ** 2) + (rotE ** 2) + (rotZ ** 2)
 

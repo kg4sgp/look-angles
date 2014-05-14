@@ -5,11 +5,11 @@ These set of programs calculate look angles from one set of coordinates to the n
 
 The octave script (the lookangle.m) should be able to be used in Matlab but I have not tried to use it in matlab, only octave.
 
-These programs have been written to take longitude and latitude decimal degrees and altitude in meters.
+These programs have been written to take longitude and latitude in decimal degrees and altitude in meters.
 
 Currently these programs assume the earth is spherical whereas GPS gives coordinates using the WGS-84 geoid. I plan to change that in the future (even though it probably wont change much anything for normal uses of these programs... I like to be as accurate as I can).
 
-=== Notes on using these for antenna pointing ===
+### Notes on using these for antenna pointing ###
 
 If you're using this for antenna pointing you'll probably want to be careful about some situations you might run into. 
 
