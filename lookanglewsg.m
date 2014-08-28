@@ -9,7 +9,7 @@
 % Longitude and Latitude in decimal degrees (ddd.ddddddd)
 % Altitude in meters
 
-function [az, el, range] = lookangle(lat_ground, lon_ground, alt_ground, lat_point, lon_point, alt_point);
+function [az, el, range, x, y, z] = lookangwsg(lat_ground, lon_ground, alt_ground, lat_point, lon_point, alt_point);
 
 	% Add the radius of the earth to the heights
 	radius_e = 6378135;
@@ -21,6 +21,16 @@ function [az, el, range] = lookangle(lat_ground, lon_ground, alt_ground, lat_poi
 	lon_ground = (pi/180)*lon_ground;
 	lat_point = (pi/180)*lat_point;
 	lon_point = (pi/180)*lon_point;
+
+	% WSG84 Stuff
+	f = 1/298.26;
+	a = radius_e;
+	C = 1 / sqrt( 1 + f*(f-2)*(sin(lat_ground).^2));
+	S = ((1-f).^2)*C;
+	
+	x = a*C*cos(lat_ground)*cos(lon_ground)
+	y = a*C*cos(lat_ground)*sin(lon_ground)
+	z = a*S*sin(lat_ground)
 
 	% Convert ground station to Earth Centered Rotational (ECR) coordinates
 	z_ground = radius_ground * sin(lat_ground);
