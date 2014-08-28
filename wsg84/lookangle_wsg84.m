@@ -9,10 +9,10 @@
 % Longitude and Latitude in decimal degrees (ddd.ddddddd)
 % Altitude in meters
 
-function [az, el, range, x, y, z] = lookangwsg(lat_ground, lon_ground, alt_ground, lat_point, lon_point, alt_point);
+function [az, el, range] = lookangle_wsg84(lat_ground, lon_ground, alt_ground, lat_point, lon_point, alt_point);
 
 	% Add the radius of the earth to the heights
-	radius_e = 6378135;
+	radius_e = 6378137;
 	radius_ground = radius_e + alt_ground;
 	radius_point = radius_e + alt_point;
 
@@ -22,28 +22,20 @@ function [az, el, range, x, y, z] = lookangwsg(lat_ground, lon_ground, alt_groun
 	lat_point = (pi/180)*lat_point;
 	lon_point = (pi/180)*lon_point;
 
-	% WSG84 Stuff
-	f = 1/298.26;
-	a = radius_e;
-	C = 1 / sqrt( 1 + f*(f-2)*(sin(lat_ground).^2));
-	S = ((1-f).^2)*C;
+	% WSG84 
+	f = 1/298.257223563;
+	ecc = 8.1819190842621E-2;
+	N = radius_e / sqrt(1 - (ecc.^2)*sin(lat_ground).^2);
+
+	% WSG84 to ECR
+	x_ground = (N+alt_ground)*cos(lat_ground)*cos(lon_ground);
+	y_ground = (N+alt_ground)*cos(lat_ground)*sin(lon_ground);
+	z_ground = (N*(1 - ecc.^2) + alt_ground)*sin(lat_ground);
+
+	x_point = (N+alt_point)*cos(lat_point)*cos(lon_point);
+	y_point = (N+alt_point)*cos(lat_point)*sin(lon_point);
+	z_point = (N*(1 - ecc.^2) + alt_point)*sin(lat_point);
 	
-	x = a*C*cos(lat_ground)*cos(lon_ground)
-	y = a*C*cos(lat_ground)*sin(lon_ground)
-	z = a*S*sin(lat_ground)
-
-	% Convert ground station to Earth Centered Rotational (ECR) coordinates
-	z_ground = radius_ground * sin(lat_ground);
-	r_ground = radius_ground * cos(lat_ground);
-	x_ground = r_ground * cos(lon_ground);
-	y_ground = r_ground * sin(lon_ground);
-
-	% Convert point station to Earth Centered Rotational (ECR) coordinates
-	z_point = radius_point * sin(lat_point);
-	r_point = radius_point * cos(lat_point);
-	x_point = r_point * cos(lon_point);
-	y_point = r_point * sin(lon_point);
-
 	% Calculate the range vector
 	range_v = [x_point-x_ground, y_point-y_ground, z_point-z_ground];
 
@@ -55,31 +47,31 @@ function [az, el, range, x, y, z] = lookangwsg(lat_ground, lon_ground, alt_groun
 	% Calculate range distance
 	range = sqrt(rot_s.^2 + rot_e.^2 + rot_z.^2);
 
-  % Calculate elevation and point upwards if range is 0 (same point for all we can tell)
+	% Calculate elevation and point upwards if range is 0 (same point for all we can tell)
 	if(range == 0)
-		el = (pi/2);
+		el_rad = (pi/2);
 	else
-		el = asin(rot_z/range);
+		el_rad = asin(rot_z/range);
 	end
 
-  % Calculate azimuth and take care of divide by zero case
+	% Calculate azimuth and take care of divide by zero case
 	if(rot_s == 0)
-		az = (pi/2);
+		az_rad = (pi/2);
 	else
-		az = atan(-1*(rot_e/rot_s));
+		az_rad = atan(-1*(rot_e/rot_s));
 	end
 
 	if (rot_s > 0)
-		az = az+pi;
+		az_rad = az_rad+pi;
 	end
 
-	if (az < 0)
-		az = az+(2*pi);
+	if (az_rad < 0)
+		az_rad = az_rad+(2*pi);
 	end
 
 	% Convert az and el to degrees
-	el = el*(180/pi);
-	az = az*(180/pi);
+	el = el_rad*(180/pi);
+	az = az_rad*(180/pi);
 
 end
 

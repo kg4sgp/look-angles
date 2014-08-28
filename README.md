@@ -7,7 +7,7 @@ The octave script (the lookangle.m) should be able to be used in Matlab but I ha
 
 These programs have been written to take longitude and latitude in decimal degrees and altitude in meters.
 
-Currently these programs assume the earth is spherical whereas GPS gives coordinates using the WGS-84 geoid. I plan to change that in the future (even though it probably wont change much anything for normal uses of these programs... I like to be as accurate as I can).
+These programs have been written with different geodetic systems in mind, described by the directory they are in. If you're using GPS data, use the wsg84 programs (GPS uses the WSG 84 geodetic system).
 
 ### Notes on using these for antenna pointing ###
 
