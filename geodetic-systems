@@ -1,0 +1,9 @@
+Reference numbers for different geodetic datums.
+
+WGS 72
+a = 6378135
+f = 1/298.26
+
+WGS 84
+a = 6378137
+f = 1/298.257223563

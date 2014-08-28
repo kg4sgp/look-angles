@@ -1,13 +1,11 @@
 Look Angle Calculators
 ======================
 
-These set of programs calculate look angles from one set of coordinates to the next. This is extremely useful for automatic antenna tracking to moving transmitters with telemetry. For example my intended use of these is with automatic antenna pointing to a high altitude balloon.
+These set of programs calculate look angles from one set of coordinates to the next. This is extremely useful for automatic antenna tracking of moving transmitters with telemetry.
 
-The octave script (the lookangle.m) should be able to be used in Matlab but I have not tried to use it in matlab, only octave.
+These take longitude and latitude in decimal degrees and altitude in meters. They return azmuth and elevation in degrees, and range in meters.
 
-These take longitude and latitude in decimal degrees and altitude in meters.
-
-These programs have been written with different geodetic systems in mind, described by the directory they are in. If you're using GPS data, use the wgs84 programs (GPS uses the WGS 84 geodetic system).
+There are currently two implementations useing different geodetic systems, namely the WGS 84, and a simplistic spherical system. If you're using GPS data, use the wgs84 programs (GPS uses the WGS 84 geodetic system).
 
 ### Notes on using these for antenna pointing ###
 
