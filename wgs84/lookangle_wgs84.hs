@@ -1,3 +1,6 @@
+module Main where
+import Text.Printf (printf)
+import Debug.Trace
 
 type Latitude  = Double
 type Longitude = Double
@@ -46,10 +49,23 @@ lookAngle (Coordinate gLat gLon gAlt) (Coordinate pLat pLon pAlt) =
              then pi / 2
              else asin (rotZ / range')
 
-    azRad = case () of _
-                         | rotS > 0  -> atan (-(rotE / rotS)) + pi
-                         | rotS < 0  -> atan (-(rotE / rotS)) + (2 * pi)
-                         | otherwise -> pi / 2
+    azRad' = (if rotS == 0
+             then pi / 2
+             else atan (-(rotE / rotS))) + (if rotS > 0
+                                            then pi
+                                            else 0)
+
+    azRad = azRad' + if azRad' < 0
+                     then (2 * pi)
+                     else 0
 
     elevation' = elRad * (180 / pi)
     azimuth'   = azRad * (180 / pi)
+
+main :: IO ()
+main =
+  printf "\n\nAz: %.2f\nEl: %.2f\nRange: %.2f\n\n" (azimuth lookAngles) (elevation lookAngles) (range lookAngles)
+  where
+    ground     = Coordinate 41.09471 (-80.74699) 350.9
+    obs        = Coordinate 41.09472 (-80.74697) 351.8
+    lookAngles = lookAngle ground obs
