@@ -1,6 +1,5 @@
 module Main where
 import Text.Printf (printf)
-import Debug.Trace
 
 type Latitude  = Double
 type Longitude = Double
